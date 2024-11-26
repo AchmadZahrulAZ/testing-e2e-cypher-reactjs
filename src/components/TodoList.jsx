@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { currentTodo, toggleTodo } from '../redux/slices/todosSlice';
-import { fetchTodos, deleteTodo } from '../redux/async/todosSlice';
+import { currentTodo, toggleTodo, fetchTodos, deleteTodo } from '../redux/async/todosSlice';
 
 const TodoList = () => {
   const dispatch = useDispatch();
@@ -34,9 +33,17 @@ const TodoList = () => {
 
   // Handle toggle completed status
   const handleToggle = (todoId, completed) => {
-    // Mengubah status completed dan mengirim ke API
-    dispatch(toggleTodo({ id: todoId, completed: !completed }));
+    console.log('Mengubah status todo:', { id: todoId, completed: !completed }); // Debug
+    dispatch(toggleTodo({ id: todoId, completed: !completed }))
+      .unwrap()
+      .then((updatedTodo) => {
+        console.log('Todo berhasil diperbarui:', updatedTodo); // Debug
+      })
+      .catch((error) => {
+        console.error('Gagal memperbarui todo:', error); // Debug
+      });
   };
+  
 
   return (
     <ul className="list-group">
@@ -59,6 +66,7 @@ const TodoList = () => {
                 e.stopPropagation(); // Prevent triggering todo toggle
                 dispatch(currentTodo(todo)); // Set the current todo for editing
               }}
+              cy-data="edit-button"
             >
               {translations[language].editButton}
             </button>
@@ -70,6 +78,7 @@ const TodoList = () => {
                 e.stopPropagation(); // Prevent triggering todo toggle
                 dispatch(deleteTodo(todo.id)); // Dispatch delete action
               }}
+              cy-data="delete-button"
             >
               {translations[language].deleteButton}
             </button>

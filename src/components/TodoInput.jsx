@@ -49,12 +49,14 @@ const TodoInput = () => {
           placeholder={translations[language].addTaskPlaceholder}
           required
           value={text}
+          cy-data="input-form"
           onChange={(e) => setText(e.target.value)}
           disabled={loading}
         />
         <button
           className={`btn ${isUpdate ? 'btn-warning' : 'btn-primary'}`}
           type="submit"
+          cy-data="input-button"
           disabled={loading}
         >
           {isUpdate ? translations[language].updateButton : translations[language].addButton}

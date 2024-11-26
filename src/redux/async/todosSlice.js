@@ -32,12 +32,13 @@ export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id) => {
 // Thunk untuk toggle status completed
 export const toggleTodo = createAsyncThunk('todos/toggleTodo', async ({ id, completed }, { rejectWithValue }) => {
   try {
-    const response = await axios.patch(`/api/todos/${id}`, { completed });
+    const response = await axios.patch(`${API_URL}/${id}`, { completed }); // Perbaiki endpoint
     return response.data; // Kembalikan todo yang telah diperbarui
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error.response?.data || 'API Error'); // Tangani error
   }
 });
+
 
 const initialState = {
   todos: [],
@@ -125,8 +126,10 @@ const todosSlice = createSlice({
       const index = state.todos.findIndex((todo) => todo.id === updatedTodo.id);
       if (index !== -1) {
         state.todos[index] = updatedTodo;
+        console.log('State todos setelah toggle:', state.todos); // Debug
       }
     });
+    
   },
 });
 

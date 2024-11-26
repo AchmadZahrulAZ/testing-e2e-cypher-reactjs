@@ -16,14 +16,6 @@ const todoSlice = createSlice({
         deleteTodo: (state, action) => {
             state.todos = state.todos.filter((todo) => todo.id !== action.payload);
         },
-        toggleTodo: (state, action) => {
-            state.todos = state.todos.map((todo) => {
-                if (todo.id === action.payload) {
-                    todo.completed = !todo.completed;
-                }
-                return todo;
-            });
-        },
         currentTodo: (state, action) => {
             state.isUpdate = true;
             state.todo = action.payload;
